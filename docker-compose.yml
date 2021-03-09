@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  composer:
+    image: library/composer
+    environment:
+      - COMPOSER_CACHE_DIR=/app/var/cache/composer
+    volumes:
+      - .:/app
+    restart: never
+
+  tests_unit:
+    build:
+      context: ./
+      dockerfile: docker/php-cli/Dockerfile
+    env_file:
+      - docker/.env.test
+    volumes:
+      - .:/app
+    working_dir: /app
+    restart: never
+    entrypoint: vendor/bin/phpunit
+
+  tests_acceptance:
+    build:
+      context: ./
+      dockerfile: docker/php-cli/Dockerfile
+    env_file:
+      - docker/.env.test
+    volumes:
+      - .:/app
+    working_dir: /app
+    restart: never
+    entrypoint: vendor/bin/behat

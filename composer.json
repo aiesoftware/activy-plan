@@ -1,0 +1,32 @@
+{
+    "name": "aiesoftware/domain-modelling-base",
+    "description": "A base repository for quick start domain modelling with outside-in tests",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Alex Eves",
+            "email": "alex.eves@aiesoftware.com"
+        }
+    ],
+    "require-dev": {
+        "behat/behat": "^3.8",
+        "phpunit/phpunit": "^9.5",
+        "zalas/behat-no-extension": "^2.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Unit\\": "tests/unit",
+            "Tests\\Acceptance\\": "tests/acceptance"
+        }
+    },
+    "config": {
+        "platform": {
+          "php": "7.4"
+        }
+    }
+}

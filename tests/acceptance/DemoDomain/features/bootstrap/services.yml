@@ -1,0 +1,16 @@
+services:
+
+  App\:
+    resource: '../../../../../src'
+    public: true
+    autowire: true
+
+  Tests\Acceptance\:
+    resource: '../../../'
+    public: true
+    autowire: true
+
+  Tests\Acceptance\DemoDomain\Infrastructure\InMemoryPlannerRepository:
+    class: Tests\Acceptance\DemoDomain\Infrastructure\InMemoryPlannerRepository
+
+  App\DemoDomain\Repository\PlannerRepositoryInterface: '@Tests\Acceptance\DemoDomain\Infrastructure\InMemoryPlannerRepository'
