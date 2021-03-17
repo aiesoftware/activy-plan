@@ -1,12 +1,13 @@
 version: '3.8'
 services:
   composer:
-    image: library/composer
-    environment:
-      - COMPOSER_CACHE_DIR=/app/var/cache/composer
+    build:
+      context: ./
+      dockerfile: docker/php-cli/Dockerfile
     volumes:
       - .:/app
-    restart: never
+    working_dir: /app
+    entrypoint: composer
 
   tests_unit:
     build:

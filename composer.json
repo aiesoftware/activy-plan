@@ -8,6 +8,10 @@
             "email": "alex.eves@aiesoftware.com"
         }
     ],
+    "require": {
+        "beberlei/assert": "^3.3",
+        "ramsey/uuid": "^4.1"
+    },
     "require-dev": {
         "behat/behat": "^3.8",
         "phpunit/phpunit": "^9.5",

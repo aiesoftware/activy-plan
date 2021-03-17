@@ -1,0 +1,12 @@
+services:
+
+  App\:
+    resource: '../../../src'
+    exclude: '../../../src/{Booking}/{Command,Entity,Collection,Exception,ValueObject}'
+    public: true
+    autowire: true
+
+  Tests\Acceptance\:
+    resource: '../'
+    public: true
+    autowire: true

@@ -1,13 +1,13 @@
 default:
   suites:
-    planner:
+    booking:
       paths:
-        - "%paths.base%/tests/acceptance/DemoDomain"
+        - "%paths.base%/tests/acceptance/Booking"
       contexts:
-        - Tests\Acceptance\DemoDomain\features\bootstrap\FeatureContext
+        - Tests\Acceptance\Booking\features\bootstrap\FeatureContext
 
   extensions:
     Zalas\Behat\NoExtension:
       argument_resolver: true
       imports:
-        - "%paths.base%/tests/acceptance/DemoDomain/features/bootstrap/services.yml"
+        - "%paths.base%/tests/acceptance/config/services.yml"

@@ -1,25 +1,21 @@
-A lightweight starter template for modelling domains with a test-driven approach.
+#### The domain
 
-Run tests:
+As a User, I want to:
 ```
-$ docker-compose run --rm tests_unit
-$ docker-compose run --rm tests_acceptance
-```
-
-Installing/adding dependencies:
-
-```
-$ docker run --rm -v $(pwd):/app composer <install|update|require foo/bar>
+- See activities that are available during my stay
+- Book myself and/or other members of my party onto activities
+- Remove myself or other members of my party from activities we are book on
+- Watch activities and become alerted if they become available
+- Receive a morning alert detailing today's upcoming activities
 ```
 
-xDebug (PHPStorm):
+As an Admin User, I will need to:
+```
+- Create new activities and assign them to slots within the week
+- Edit/Remove activities that have been created
+- View the participants currently enrolled onto each activity
+- Manually trigger alerts to participants for a specific activity for unexpected updates
+```
 
-```
-Preferences => Languages & Frameworks => PHP => Debug: Set port to 9002
-Preferences => Languages & Frameworks => PHP => Servers:
-    Add new
-    Name: domain-model (matching docker/.env.test value)
-    Host: localhost
-    Path Mappings: map to /app
-```
+
 
