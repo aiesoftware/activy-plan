@@ -24,7 +24,7 @@ class ActivitySlot
         int $capacity
     )
     {
-        Assertion::greaterThan($capacity, -1);
+        Assertion::greaterThan($capacity, -1); // todo unit test
         $this->activityId = $activityId;
         $this->startDateTime = $startDateTime;
         $this->endDateTime = $endDateTime;
@@ -43,9 +43,9 @@ class ActivitySlot
         int $minimumAgeLimit
     ): self
     {
-        Assertion::greaterThan($duration, 0);
+        Assertion::greaterThan($duration, 0); // todo unit test
 
-        $endDateTime = $startDateTime->modify(sprintf('+ %s minutes', $duration));
+        $endDateTime = $startDateTime->modify(sprintf('+ %s minutes', $duration)); // todo unit test
         if ($endDateTime === false) {
             throw new \InvalidArgumentException('Duration given does not yield a valid date modifier string');
         }
@@ -68,12 +68,12 @@ class ActivitySlot
         }
 
         if (!$this->hasPlacesAvailable($activityParticipants->count())) {
-            $exception = CouldNotMakeBooking::insufficientPlacesAvailable();
+            $exception = CouldNotMakeBooking::insufficientPlacesAvailable(); // todo unit test
             throw new $exception;
         }
 
         if ($this->activityBeginsOutsideOfGuestsStayWindow($guest)) {
-            $exception = CouldNotMakeBooking::activitySlotOutsideOfGuestsStayWindow();
+            $exception = CouldNotMakeBooking::activitySlotOutsideOfGuestsStayWindow(); // todo unit test
             throw new $exception;
         }
 
@@ -88,19 +88,19 @@ class ActivitySlot
     private function verifyParticipantAges(ActivityParticipantCollection $activityParticipants): void
     {
         foreach ($activityParticipants as $activityParticipant) {
-            if ($this->participantViolatesAgeRestriction($activityParticipant)) {
+            if ($this->participantViolatesAgeRestriction($activityParticipant)) { // todo unit test
                 $exception = CouldNotMakeBooking::participantBelowMinimumAgeLimit($this->minimumAgeLimit);
                 throw new $exception;
             }
         }
     }
 
-    public function participantViolatesAgeRestriction(ActivityParticipant $activityParticipant): bool
+    private function participantViolatesAgeRestriction(ActivityParticipant $activityParticipant): bool
     {
         return $activityParticipant->age() < $this->minimumAgeLimit;
     }
 
-    public function hasPlacesAvailable(int $requiredPlaces): bool
+    private function hasPlacesAvailable(int $requiredPlaces): bool
     {
         return $this->numPlacesAvailable() >= $requiredPlaces;
     }
@@ -135,32 +135,4 @@ class ActivitySlot
     {
         return $this->activityId->value();
     }
-//
-//    public function confirmBooking(Guest $leadGuest)
-//    {
-//        $requiredReservations = count($this->reservations[$leadGuest->idAsString()]);
-//
-//        if ($requiredReservations === 0) {
-//            $exception = CouldNotConfirmBooking::reservationNotFound($leadGuest->idAsEntity());
-//            throw new $exception;
-//        }
-//
-//        if ($requiredReservations > $this->numPlacesAvailable()) {
-//            $exception = CouldNotConfirmBooking::insufficientPlacesAvailable();
-//            throw new $exception;
-//        }
-//
-//        foreach ($this->reservations[$leadGuest->idAsString()] as $index => $guest) {
-//            $this->confirmedBookings[] = $guest;
-//            unset($this->reservations[$leadGuest->idAsString()][$index]);
-//        }
-//
-//        unset($this->reservations[$leadGuest->idAsString()]);
-//    }
-//
-
-//
-
-
-
 }

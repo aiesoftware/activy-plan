@@ -28,7 +28,7 @@ class Guest
         DateTimeImmutable $arrivalDateTime,
         DateTimeImmutable $checkoutDateTime
     ) {
-        Assertion::greaterThan($checkoutDateTime, $arrivalDateTime, 'Departure date must be after arrival date');
+        Assertion::greaterThan($checkoutDateTime, $arrivalDateTime, 'Departure date must be after arrival date'); // todo unit test
 
         $this->id = $id;
         $this->firstName = $firstName;
@@ -50,11 +50,7 @@ class Guest
         return new self($id, $firstName, $lastName, $dob, $arrivalDateTime, $checkoutDateTime);
     }
 
-    public function makeBookingFor(
-        ActivitySlot $activitySlot,
-        ActivityParticipantCollection $activityParticipants,
-        BookingRepositoryInterface $bookingRepository
-    ): void
+    public function makeBookingFor(ActivitySlot $activitySlot, ActivityParticipantCollection $activityParticipants, BookingRepositoryInterface $bookingRepository): void
     {
         $booking = Booking::create($activitySlot, $this, $activityParticipants);
         $bookingRepository->store($booking);

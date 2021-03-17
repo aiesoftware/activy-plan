@@ -12,7 +12,7 @@ class ActivityParticipant
 
     private function __construct(string $firstName, string $lastName, int $age)
     {
-        Assertion::greaterThan($age, -1);
+        Assertion::greaterThan($age, -1); // todo unit test
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->age = $age;
