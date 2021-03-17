@@ -2,7 +2,7 @@
 
 namespace App\Booking\Entity;
 
-use App\Booking\Exception\CouldNotCreateBooking;
+use App\Booking\Exception\CouldNotMakeBooking;
 use App\Booking\Entity\Collection\ActivityParticipantCollection;
 use App\Booking\Repository\BookingRepositoryInterface;
 use App\Shared\Domain\EntityId;
@@ -58,12 +58,21 @@ class Guest
     {
         $booking = Booking::create($activitySlot, $this, $activityParticipants);
         $bookingRepository->store($booking);
-        $activitySlot->bookParticipantsOnToSlot($this, $activityParticipants);
     }
 
     public function age(): int
     {
         $today = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', (new DateTimeImmutable())->format('Y-m-d 00:00:00'));
         return $this->dob->diff($today)->y;
+    }
+
+    public function arrivesAt(): DateTimeImmutable
+    {
+        return $this->arrivalDateTime;
+    }
+
+    public function checksOutAt(): DateTimeImmutable
+    {
+        return $this->checkoutDateTime;
     }
 }

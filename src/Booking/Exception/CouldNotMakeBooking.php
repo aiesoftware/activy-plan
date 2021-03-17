@@ -2,7 +2,7 @@
 
 namespace App\Booking\Exception;
 
-class CouldNotCreateBooking extends \RuntimeException
+class CouldNotMakeBooking extends \RuntimeException
 {
     public static function participantBelowMinimumAgeLimit(int $minimumAgeLimit): self
     {
@@ -12,5 +12,10 @@ class CouldNotCreateBooking extends \RuntimeException
     public static function insufficientPlacesAvailable(): self
     {
         return new self('Insufficient places available on activity slot.');
+    }
+
+    public static function activitySlotOutsideOfGuestsStayWindow(): self
+    {
+        return new self('Activity takes place outside of the Guests stay window.');
     }
 }

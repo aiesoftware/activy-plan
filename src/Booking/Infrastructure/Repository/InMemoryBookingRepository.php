@@ -23,7 +23,7 @@ class InMemoryBookingRepository implements BookingRepositoryInterface
         $this->bookings->add($booking);
     }
 
-    public function findOneForGuestByActivityAtSpecificTime(Guest $guest, Activity $activity, \DateTimeImmutable $bookingDateTime): Booking
+    public function findOneForGuestByActivityAtSpecificTime(Guest $guest, Activity $activity, \DateTimeImmutable $bookingDateTime): ?Booking
     {
         /** @var Booking $booking */
         foreach ($this->bookings as $booking) {
@@ -35,5 +35,7 @@ class InMemoryBookingRepository implements BookingRepositoryInterface
                 return $booking;
             }
         }
+
+        return null;
     }
 }

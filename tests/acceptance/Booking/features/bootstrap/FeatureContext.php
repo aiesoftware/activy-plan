@@ -8,7 +8,7 @@ use App\Booking\Entity\ActivityParticipant;
 use App\Booking\Entity\Collection\ActivityParticipantCollection;
 use App\Booking\Entity\Guest;
 use App\Booking\Entity\Park;
-use App\Booking\Exception\CouldNotCreateBooking;
+use App\Booking\Exception\CouldNotMakeBooking;
 use App\Booking\Entity\ActivitySlot;
 use App\Booking\Infrastructure\Repository\InMemoryBookingRepository;
 use App\Booking\Repository\BookingRepositoryInterface;
@@ -109,9 +109,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @When he creates a Booking for himself on that Activity Slot
+     * @When he makes a Booking for himself on that Activity Slot
      */
-    public function heBooksAPlaceForHimselfOnThatActivitySlot()
+    public function bookParticipantsOnToSlot()
     {
         $bookingService = new BookingService($this->bookingRepository);
 
@@ -137,7 +137,6 @@ class FeatureContext implements Context
         if ($booking === null) {
             throw new \Exception();
         }
-
     }
 
     /**
@@ -152,75 +151,29 @@ class FeatureContext implements Context
         }
     }
 
-
     /**
-     * @Given an Activity at the :parkName Park named :activityName with a minimum age limit of :minimumAgeLimit has an Activity Slot at :activityDateTime lasting :activityDuration hour with :activityCapacity places available
+     * @When he attempts to make a Booking on that Activity Slot
      */
-    public function initialiseActivityWithSlot(
-        string $parkName,
-        string $activityName,
-        string $activityMinimumAgeLimit,
-        string $activityDateTime,
-        string $activityDuration,
-        string $activityCapacity
-    )
-    {
-        $durationInMinutes = (int) $activityDuration * 60;
-        $this->activity = Activity::initialise($activityName, $activityMinimumAgeLimit);
-        $park = Park::named($parkName);
-        $slot = ActivitySlot::initialiseFromDuration($this->activity, new DateTimeImmutable($activityDateTime), $durationInMinutes, $activityCapacity);
-        $this->slotStartDateTime = $slot->beginsAt();
-    }
-
-    /**
-     * @Then he can reserve a booking on that activity slot for :reservationLengthInMinutes minutes
-     */
-    public function reserveBookingOnActivitySlot()
-    {
-        // Issue a Command
-        // ReserveBookingOnSlot: $slotStartDateTime, $leadGuest, $additionalGuests
-        // $leadGuest: {firstname, lastname, ?telephone, ?email, dob}
-        // - must have at least telephone OR email
-        // $additionalGuests: [{dob}, {dob}]
-        // $this->activity->reserveBookingOnSlot($slotStartDateTime, $leadGuest, $additionalGuests)
-        // reserve booking should validate the ages of each guest against the min age limit set on the Activity
-        $this->activity->reservePlacesOnSlot($this->slotStartDateTime, $this->guest);
-    }
-
-    /**
-     * @Then he cannot reserve a booking on that activity slot
-     */
-    public function attemptReserveBookingOnActivitySlot()
+    public function attemptToBookParticipantsOnToSlot()
     {
         try {
-            $this->activity->reservePlacesOnSlot($this->slotStartDateTime, $this->guest);
-        } catch (CouldNotCreateBooking $e) {
+            $this->bookParticipantsOnToSlot();
+        } catch (CouldNotMakeBooking $e) {
             return;
         }
 
-        throw new \Exception(sprintf('Expected to catch %s Exception', CouldNotCreateBooking::class));
+        throw new \Exception(sprintf('Expected to catch %s Exception', CouldNotMakeBooking::class));
     }
-
 
     /**
-     * @Then the activity slot should have :placesRemaining places remaining
+     * @Then the Booking should not be added to his Planner
      */
-    public function assertNumPlacesRemainingOnActivitySlot($expectedPlacesRemaining)
+    public function theBookingShouldNotBeAddedToHisPlanner()
     {
-        $remainPlacesOnSlot = $this->activity->numPlacesAvailableOnSlot($this->slotStartDateTime);
-        if ($remainPlacesOnSlot !== (int) $expectedPlacesRemaining) {
-            throw new \Exception(
-                sprintf('Excepted to have %s slots remaining but there are %s', $expectedPlacesRemaining, $remainPlacesOnSlot)
-            );
+        $booking = $this->bookingRepository->findOneForGuestByActivityAtSpecificTime($this->guest, $this->activity, $this->activitySlot->beginsAt());
+
+        if ($booking !== null) {
+            throw new \Exception();
         }
     }
-
-//    /**
-//     * @And
-//     */
-//    public function confirmsTheBooking()
-//    {
-//        $this->activity->confirmBookingForLeadGuest($this->slotStartDateTime, $this->guest);
-//    }
-
 }
