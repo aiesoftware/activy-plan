@@ -61,7 +61,7 @@ class ActivitySlot
         return $this->startDateTime;
     }
 
-    public function bookParticipantsOnToSlot(Guest $guest, ActivityParticipantCollection $activityParticipants): void
+    public function bookParticipants(Guest $guest, ActivityParticipantCollection $activityParticipants): void
     {
         if ($this->hasAgeRestriction()) {
             $this->verifyParticipantAges($activityParticipants);

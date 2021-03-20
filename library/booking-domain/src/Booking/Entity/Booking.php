@@ -26,7 +26,6 @@ class Booking
         ActivityParticipantCollection $activityParticipants
     ): self
     {
-        $activitySlot->bookParticipantsOnToSlot($leadGuest, $activityParticipants);
         return new self($activitySlot, $leadGuest, $activityParticipants);
     }
 

@@ -52,6 +52,7 @@ class Guest
 
     public function makeBookingFor(ActivitySlot $activitySlot, ActivityParticipantCollection $activityParticipants, BookingRepositoryInterface $bookingRepository): void
     {
+        $activitySlot->bookParticipants($this, $activityParticipants);
         $booking = Booking::create($activitySlot, $this, $activityParticipants);
         $bookingRepository->store($booking);
     }
