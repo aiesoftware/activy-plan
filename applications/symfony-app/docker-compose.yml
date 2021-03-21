@@ -1,0 +1,65 @@
+version: '3'
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        XDEBUG: 1
+    image: digitalocean.com/php
+    container_name: activy-plan-symfony-app
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www
+      - ./docker/php-fpm/local.ini:/usr/local/etc/php/conf.d/local.ini
+    env_file:
+      - ./docker/.env
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    networks:
+      - activy-plan-symfony-app-network
+
+  webserver:
+    image: nginx:alpine
+    container_name: activy-plan-symfony-webserver
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/sites:/etc/nginx/sites-available
+    ports:
+      - "8090:80"
+      - "4433:443"
+    networks:
+      - activy-plan-symfony-app-network
+
+  db:
+    image: mysql:5.7.22
+    container_name: activy-plan-symfony-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3311:3306"
+    environment:
+      MYSQL_DATABASE: concr
+      MYSQL_ROOT_PASSWORD: concr
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - activy-plan-symfony-app-network
+
+networks:
+  activy-plan-symfony-app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
