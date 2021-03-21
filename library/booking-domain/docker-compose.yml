@@ -2,7 +2,7 @@ version: '3.8'
 services:
   composer:
     build:
-      context: ./../../
+      context: .
       dockerfile: docker/php74-cli/Dockerfile
     volumes:
       - .:/app
@@ -11,7 +11,7 @@ services:
 
   tests_unit:
     build:
-      context: ./../../
+      context: .
       dockerfile: docker/php74-cli/Dockerfile
     env_file:
       - .env.test
@@ -23,7 +23,7 @@ services:
 
   tests_acceptance:
     build:
-      context: ./../../
+      context: .
       dockerfile: docker/php74-cli/Dockerfile
     env_file:
       - .env.test
