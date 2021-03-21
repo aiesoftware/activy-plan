@@ -1,6 +1,6 @@
 FROM php:7.4-cli
 
-COPY docker/php-cli/php.ini /usr/local/etc/php
+COPY docker/php74-cli/php.ini /usr/local/etc/php
 
 RUN apt-get update -y \
   && apt-get install -y \

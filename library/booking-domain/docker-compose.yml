@@ -2,8 +2,8 @@ version: '3.8'
 services:
   composer:
     build:
-      context: ./
-      dockerfile: docker/php-cli/Dockerfile
+      context: ./../../
+      dockerfile: docker/php74-cli/Dockerfile
     volumes:
       - .:/app
     working_dir: /app
@@ -11,10 +11,10 @@ services:
 
   tests_unit:
     build:
-      context: ./
-      dockerfile: docker/php-cli/Dockerfile
+      context: ./../../
+      dockerfile: docker/php74-cli/Dockerfile
     env_file:
-      - docker/.env.test
+      - .env.test
     volumes:
       - .:/app
     working_dir: /app
@@ -23,10 +23,10 @@ services:
 
   tests_acceptance:
     build:
-      context: ./
-      dockerfile: docker/php-cli/Dockerfile
+      context: ./../../
+      dockerfile: docker/php74-cli/Dockerfile
     env_file:
-      - docker/.env.test
+      - .env.test
     volumes:
       - .:/app
     working_dir: /app
